@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  frontendpd:
+    image: claudiooak/frontendpd:{{ frontendpd_tag|default('0.0.1') }} 
+    deploy:
+      replicas: 1
+      labels:
+        # Enable traefik for this service
+        # Enable traefik for this service
+        - "traefik.enable=true"
+        - "traefik.http.routers.frontendpd{{ swarm_stack_name }}.rule=Host(`frontendpd.{{ swarm_stack_name }}.{{ domain|default('localhost') }}`)"
+        - "traefik.http.services.frontendpd{{ swarm_stack_name }}-service.loadbalancer.server.port=80"
+    networks:
+      - {{ traefik_network_name }}
+
+
+networks:
+  kafka_network:
+  postgres_network:
+  services_network:
+  keycloak_network:
+  {{traefik_network_name}}:
+    #  If we want traefik to be able to proxy to multiple stacks we need to have one external network!!
+    external: true

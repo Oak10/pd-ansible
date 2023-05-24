@@ -1,0 +1,18 @@
+---
+- name: Copy template - "{{ item.src }}" - compose file. 
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+    # mode: "{{ item.mode|default('0644')}}"
+  loop:
+    - src: swarm-infra.j2
+      dst: /var/tmp/swarm_infra_{{ swarm_stack_name }}.yml 
+
+# https://docs.ansible.com/ansible/latest/collections/community/docker/docker_stack_module.html#ansible-collections-community-docker-docker-stack-module
+- name: Deploy Infra stack to - "{{ swarm_stack_name|default('dev') }}" - stack.
+  community.docker.docker_stack:
+    state: present
+    name: "{{ swarm_stack_name|default('dev') }}"
+    resolve_image: always
+    compose:
+      - /var/tmp/swarm_infra_{{ swarm_stack_name|default('dev') }}.yml

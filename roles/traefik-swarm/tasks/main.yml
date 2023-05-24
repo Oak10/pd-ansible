@@ -1,0 +1,38 @@
+---
+# - name: Install pip
+#   ansible.builtin.apt:
+#     name: pip
+#     state: present
+#   become: yes
+
+- name: Install jsondiff with pip
+  ansible.builtin.pip:
+    name: jsondiff
+    executable: pip
+
+# TODO: verify
+- name: Creates docker network - traefik_network_name - for Traefik
+  ansible.builtin.shell: docker network create --driver=overlay --attachable {{ traefik_network_name }} 
+  ignore_errors: true
+
+# - name: Create network - "{{ traefik_network_name }}" - to connect traefik with other stacks. 
+#   community.docker.docker_network:
+#     name: "{{ traefik_network_name }}"
+#     driver: overlay
+#     attachable: "true"
+#     state: present
+#   when: install_traefik_network
+
+- name: Copy template Traefik compose file - /var/tmp/swarm_traefik.yml -. 
+  template:
+    src: swarm_traefik.j2
+    dest: /var/tmp/swarm_traefik.yml
+
+# https://docs.ansible.com/ansible/latest/collections/community/docker/docker_stack_module.html#ansible-collections-community-docker-docker-stack-module
+- name: Deploy Traefik to - "{{ traefik_swarm_stack_name }}" - stack.
+  community.docker.docker_stack:
+    state: present
+    name: "{{ traefik_swarm_stack_name }}"
+    resolve_image: always
+    compose:
+      - /var/tmp/swarm_traefik.yml

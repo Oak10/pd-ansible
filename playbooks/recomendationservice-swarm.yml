@@ -1,0 +1,4 @@
+- hosts: swarmserver
+  remote_user: ubuntu
+  roles:
+    - ../roles/recomendationservice-swarm

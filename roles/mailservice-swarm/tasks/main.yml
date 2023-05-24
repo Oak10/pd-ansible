@@ -1,0 +1,14 @@
+---
+- name: Copy template Mailservice compose file - /var/tmp/swarm_mailservice_{{ swarm_stack_name }}.yml -. 
+  template:
+    src: swarm_mailservice.j2
+    dest: /var/tmp/swarm_mailservice_{{ swarm_stack_name }}.yml
+
+# https://docs.ansible.com/ansible/latest/collections/community/docker/docker_stack_module.html#ansible-collections-community-docker-docker-stack-module
+- name: Deploy Mailservice to - "{{ swarm_stack_name|default('dev') }}" - stack.
+  community.docker.docker_stack:
+    state: present
+    name: "{{ swarm_stack_name|default('dev') }}"
+    resolve_image: always
+    compose:
+      - /var/tmp/swarm_mailservice_{{ swarm_stack_name }}.yml

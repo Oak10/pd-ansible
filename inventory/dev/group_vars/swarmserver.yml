@@ -1,0 +1,46 @@
+# install traefik
+install_traefik_network: true
+traefik_network_name: traefik_proxy
+traefik_swarm_stack_name: traefik
+traefik_container_version: v2.4
+traefik_replicas: 1
+
+# Tags / images
+jaeger_image: jaegertracing/all-in-one:1.43
+kafka_container_tag: 3.4.0
+postgres_container_tag: 14.1
+postgres_container_volume: postgres_data_dev
+postgres_db: keycloak
+postgres_user: keycloak
+postgres_psw: keycloak
+kafka_container_volume: kafka_data
+keycloak_admin_user: admin
+keycloak_admin_password: admin
+keycloak_docker_image: claudiooak/keycloak:21.1
+
+# Environment - used to traefik FQDN
+swarm_stack_name: dev
+domain: pd.com
+
+
+#Tags docker services
+mailservice_tag: 0.0.1
+mail_user: demopd2023
+mail_pwd: kvuwlxjgxslezrni
+mail_port: 587
+mail_host: smtp.gmail.com 
+kafka_bootstrap_servers: kafka:9092
+otel_endpoint: http://jaeger:4317
+otel_ratio: 1.0
+
+recomendationservice_tag: 0.0.1
+themoviedb_api_key: 7a95be8446cfdcaef6da48bbf0ab7bbe
+
+moviesstorageservice_tag: 0.0.1
+keycloak_realm: demo-realm
+keycloak_auth_server_url: http://keycloak
+keycloak_credentials_secret: SmmBeJCVXnTMpZVOw3niHq21SzVhJCkd
+spring_datasource_debug: "false"
+spring_datasource_url: jdbc:postgresql://postgres:5432/keycloak
+
+frontendpd_tag: 0.0.2

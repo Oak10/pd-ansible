@@ -1,0 +1,37 @@
+version: '3.7'
+services:
+  moviesstorage-service:
+    image: claudiooak/moviesstorageservice:{{ moviesstorageservice_tag|default('0.0.1') }} 
+    deploy:
+      replicas: 1
+      labels:
+        # Enable traefik for this service
+        - "traefik.enable=true"
+        - "traefik.http.routers.moviesstorage{{ swarm_stack_name }}.rule=Host(`moviesstorage.{{ swarm_stack_name }}.{{ domain|default('localhost') }}`)"
+        - "traefik.http.services.moviesstorage{{ swarm_stack_name }}-service.loadbalancer.server.port=8888"
+    environment:
+      - OTEL_RATIO={{ otel_ratio }}
+      - OTEL_ENDPOINT={{ otel_endpoint }}
+      - KAFKA_BOOTSTRAP_SERVERS={{ kafka_bootstrap_servers }}
+      - KEYCLOAK_REALM={{ keycloak_realm }}
+      - KEYCLOAK_AUTH_SERVER_URL={{ keycloak_auth_server_url }}
+      - KEYCLOAK_CREDENTIALS_SECRET={{ keycloak_credentials_secret}}
+      - SPRING_DATASOURCE_URL={{ spring_datasource_url }}
+      - SPRING_DATASOURCE_USERNAME={{ postgres_user }}
+      - SPRING_DATASOURCE_PASSWORD={{ postgres_psw }}
+      - SPRING_DATASOURCE_DEBUG={{ spring_datasource_debug|default('false') }}
+    networks:
+      - services_network
+      - postgres_network
+      - keycloak_network
+      - {{ traefik_network_name }}
+
+networks:
+  kafka_network:
+  postgres_network:
+  services_network:
+  keycloak_network:
+  {{traefik_network_name}}:
+    #  If we want traefik to be able to proxy to multiple stacks we need to have one external network!!
+    external: true
+
