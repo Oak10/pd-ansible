@@ -29,7 +29,7 @@ pipeline {
     post { 
         always {
             office365ConnectorSend webhookUrl: "${env.WEBHOOK_URL}",
-            message: "[Job: `${env.JOB_NAME}` - #${env.BUILD_NUMBER}]: ${env.BUILD_URL}",
+            message: "Job: `${env.JOB_NAME}` - #${env.BUILD_NUMBER}: ${env.BUILD_URL}",
             status: "${currentBuild.result}"
             }
         }
