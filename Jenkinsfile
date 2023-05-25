@@ -7,7 +7,6 @@ pipeline {
         DEPLOY_USER='ubuntu'
         DEPLOY_HOST='localhost'
         WEBHOOK_URL = credentials('TEAMS_WEBHOOK')
-        WEBHOOK_COLOUR='3cb371'
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '2'))
@@ -23,23 +22,15 @@ pipeline {
                 sshagent(['ubuntulocalhost']) {
                     sh "ssh -l $DEPLOY_USER $DEPLOY_HOST 'cd $DEPLOY_DIR && git fetch && git pull'"
                 }
+    
             }
         }
     }
     post { 
-        success
-        {
-            office365ConnectorSend webhookUrl: '$WEBHOOK_URL',
+        always {
+            office365ConnectorSend webhookUrl: "${env.WEBHOOK_URL}",
             message: "[Job: `${env.JOB_NAME}` - #${env.BUILD_NUMBER}]: ${env.BUILD_URL}",
-            status: "Success",
-            color: "#3EB991"
+            status: "${currentBuild.result}"
+            }
         }
-        failure
-        {
-            office365ConnectorSend webhookUrl: '$WEBHOOK_URL',
-            message: "[Job: `${env.JOB_NAME}` - #${env.BUILD_NUMBER}]: ${env.BUILD_URL}",
-            status: "Success",
-            color: "#E01563"
-        }
-    }
 }
