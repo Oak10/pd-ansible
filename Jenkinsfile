@@ -28,8 +28,17 @@ pipeline {
     }
     post { 
         always {
-            office365ConnectorSend webhookUrl: "${env.WEBHOOK_URL}",
-            message: "${currentBuild.result}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}",
+            script {
+                echo 'Always'
+                if(currentBuild.result == "SUCCESS"){
+                    env.WEBHOOK_COLOUR = "3cb371"
+                } else {
+                    env.WEBHOOK_COLOUR = "ff0000"
+                }
+            }
+            office365ConnectorSend webhookUrl: '$WEBHOOK_URL',
+            message: "`${env.JOB_NAME}` #${env.BUILD_NUMBER}: ${env.BUILD_URL}",
+            color: "${WEBHOOK_COLOUR}"
             status: "${currentBuild.result}"
             }
         }
