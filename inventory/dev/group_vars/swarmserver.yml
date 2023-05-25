@@ -45,3 +45,5 @@ spring_datasource_debug: "false"
 spring_datasource_url: jdbc:postgresql://postgres:5432/keycloak
 
 frontendpd_tag: 0.0.2
+
+allmoviesservice_tag: 0.0.1
