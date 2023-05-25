@@ -14,9 +14,13 @@ services:
       - OTEL_ENDPOINT={{ otel_endpoint }}
       - KAFKA_BOOTSTRAP_SERVERS={{ kafka_bootstrap_servers }}
       - THEMOVIEDB_API_KEY={{ themoviedb_api_key }}
+      - KEYCLOAK_REALM={{ keycloak_realm }}
+      - KEYCLOAK_AUTH_SERVER_URL={{ keycloak_auth_server_url }}
+      - KEYCLOAK_CREDENTIALS_SECRET={{ keycloak_credentials_secret}}
     networks:
       - kafka_network
       - services_network
+      - keycloak_network
       - {{ traefik_network_name }}
 
 networks:
