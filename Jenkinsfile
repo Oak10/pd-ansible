@@ -38,7 +38,7 @@ pipeline {
             }
             office365ConnectorSend webhookUrl: '$WEBHOOK_URL',
             message: "`${env.JOB_NAME}` #${env.BUILD_NUMBER}: ${env.BUILD_URL}",
-            color: "${WEBHOOK_COLOUR}"
+            color: "${WEBHOOK_COLOUR}",
             status: "${currentBuild.result}"
             }
         }
