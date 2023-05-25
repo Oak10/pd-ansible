@@ -11,12 +11,6 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '2'))
         skipDefaultCheckout()
-        office365ConnectorWebhooks([
-            [name: "Office 365", 
-            url: '$WEBHOOK_URL',
-            notifyFailure: true, 
-            notifySuccess: true]
-        ])
     }
     agent any
     stages {
@@ -32,4 +26,11 @@ pipeline {
             }
         }
     }
+    post { 
+        always {
+            office365ConnectorSend webhookUrl: "${env.WEBHOOK_URL}",
+            message: "${currentBuild.result}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}",
+            status: "${currentBuild.result}"
+            }
+        }
 }
