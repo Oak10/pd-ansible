@@ -7,8 +7,8 @@ services:
       labels:
         # Enable traefik for this service
         - "traefik.enable=true"
-        - "traefik.http.routers.moviesstorage{{ swarm_stack_name }}.rule=Host(`allmovies.{{ swarm_stack_name }}.{{ domain|default('localhost') }}`)"
-        - "traefik.http.services.moviesstorage{{ swarm_stack_name }}-service.loadbalancer.server.port=8080"
+        - "traefik.http.routers.allmovies{{ swarm_stack_name }}.rule=Host(`allmovies.{{ swarm_stack_name }}.{{ domain|default('localhost') }}`)"
+        - "traefik.http.services.allmovies{{ swarm_stack_name }}-service.loadbalancer.server.port=8080"
     environment:
       - OTEL_RATIO={{ otel_ratio }}
       - OTEL_ENDPOINT={{ otel_endpoint }}
