@@ -13,7 +13,7 @@ pipeline {
         skipDefaultCheckout()
         office365ConnectorWebhooks([
             [name: "Office 365", 
-            url: '$WEBHOOK_URL",
+            url: '$WEBHOOK_URL',
             notifyFailure: true, 
             notifySuccess: true]
         ])
