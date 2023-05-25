@@ -40,6 +40,7 @@ moviesstorageservice_tag: 0.0.1
 keycloak_realm: demo-realm
 keycloak_auth_server_url: http://keycloak
 keycloak_credentials_secret: SmmBeJCVXnTMpZVOw3niHq21SzVhJCkd
+keycloak_credentials_secret_recom: VAw1DSVQWe8TNqHzJAF7QfMyMQrxgldp
 spring_datasource_debug: "false"
 spring_datasource_url: jdbc:postgresql://postgres:5432/keycloak
 
