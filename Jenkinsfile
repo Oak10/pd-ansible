@@ -7,6 +7,7 @@ pipeline {
         DEPLOY_USER='ubuntu'
         DEPLOY_HOST='localhost'
         WEBHOOK_URL = credentials('TEAMS_WEBHOOK')
+        WEBHOOK_COLOUR='3cb371'
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '2'))
@@ -31,14 +32,14 @@ pipeline {
             script {
                 echo 'Always'
                 if(currentBuild.result == "SUCCESS"){
-                    env.WEBHOOK_COLOUR = "3cb371"
+                    env.WEBHOOK_COLOUR = "#3EB991"
                 } else {
-                    env.WEBHOOK_COLOUR = "ff0000"
+                    env.WEBHOOK_COLOUR = "#E01563"
                 }
             }
             office365ConnectorSend webhookUrl: '$WEBHOOK_URL',
             message: "`${env.JOB_NAME}` #${env.BUILD_NUMBER}: ${env.BUILD_URL}",
-            color: "${WEBHOOK_COLOUR}",
+            color: "${env.WEBHOOK_COLOUR}",
             status: "${currentBuild.result}"
             }
         }
