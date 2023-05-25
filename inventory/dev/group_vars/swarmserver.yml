@@ -33,7 +33,7 @@ kafka_bootstrap_servers: kafka:9092
 otel_endpoint: http://jaeger:4317
 otel_ratio: 1.0
 
-recommendationservice_tag: 0.0.1
+# recommendationservice_tag: 0.0.1
 themoviedb_api_key: 7a95be8446cfdcaef6da48bbf0ab7bbe
 
 moviesstorageservice_tag: 0.0.1
